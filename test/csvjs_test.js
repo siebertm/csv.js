@@ -34,3 +34,24 @@ test('escaping a field with special chars', function() {
 
   equal(csv.render(), expected);
 });
+
+test('changing the separators', function() {
+  var csv = new CSV(null, {
+    colSep: ';',
+    rowSep: '\n',
+    quoteChar: "'"
+  });
+
+  csv.push('foo\'bar', 'bar');
+  csv.push('foo\nbar', 'bar');
+  csv.push('foo;bar', 'bar');
+
+  var expected = [
+    "'foo''bar';bar",
+    '\'foo',
+    'bar\';bar',
+    '\'foo;bar\';bar'
+  ].join("\n");
+
+  equal(csv.render(), expected);
+});
